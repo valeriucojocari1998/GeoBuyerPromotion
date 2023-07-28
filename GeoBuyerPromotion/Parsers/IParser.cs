@@ -4,7 +4,8 @@ namespace GeoBuyerPromotion.Parsers
 {
 	public interface IParser
 	{
-		public List<Product> GetProducts(string file);
+		public List<Category> GetCategories(string file);
+		public List<Product> GetProductsByCategory(string file, string categoryName);
 	}
 }
 
