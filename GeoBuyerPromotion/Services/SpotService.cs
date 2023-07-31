@@ -33,10 +33,6 @@ public record SpotService: ISpotService
 
         var extendedCategories = categories.Select(cat => new ExtendedCategory(cat, spot));
         var extendedProducts = productsLists.SelectMany(pr => pr);
-        foreach (var product in extendedProducts)
-        {
-            Console.WriteLine(product + "\n");
-        }
     }
 
     public async Task<List<Category>> GetCategories()
