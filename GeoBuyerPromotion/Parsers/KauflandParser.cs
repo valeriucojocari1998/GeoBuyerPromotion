@@ -36,7 +36,6 @@ public class KauflandParser : IParser
             {
                 name = ParserHelper.RemoveMultipleSpaces(categoryNode.InnerHtml);
                 categoryUrl = ParserHelper.RemoveMultipleSpaces(categoryNode.Attributes.FirstOrDefault(x => x.Name == "href")?.Value);
-                Console.WriteLine(categoryNode.GetAttributes());
             }
 
             return new Category(Guid.NewGuid().ToString(), name, ParserHelper.NormalizeUrl(defaultUrl + categoryUrl));

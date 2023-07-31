@@ -15,7 +15,15 @@ await biedronkaService.GetProducts();*/
 /// <summary>
 /// Initiate Kaufland Service and Get Data
 /// </summary>
-string kauflandUrl = "https://www.kaufland.pl/oferta/aktualny-tydzien/przeglad.category=01_Mi%C4%99so__Dr%C3%B3b__W%C4%99dliny.html";
+/*string kauflandUrl = "https://www.kaufland.pl/oferta/aktualny-tydzien/przeglad.category=01_Mi%C4%99so__Dr%C3%B3b__W%C4%99dliny.html";
 IParser kauflandParser =  new KauflandParser();
 ISpotService kauflandService = new SpotService(repository, kauflandParser, SpotProvider.Kaufland, kauflandUrl, "");
-await kauflandService.GetProducts();
+await kauflandService.GetProducts();*/
+
+/// <summary>
+/// Initiate Lidl Serive and Get Data
+/// </summary>
+string lidlUrl = "https://www.lidl.pl/q/query/wyprzedaz";
+IParser lidlParser = new LidlParser();
+ISpotService lidlService = new SpotService(repository, lidlParser, SpotProvider.Lidl, lidlUrl, "");
+await  lidlService.GetProducts();
