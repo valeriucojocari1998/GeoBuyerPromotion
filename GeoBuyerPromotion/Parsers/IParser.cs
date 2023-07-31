@@ -1,11 +1,13 @@
 ﻿using GeoBuyerPromotion.Models;
+using HtmlAgilityPack;
 
-namespace GeoBuyerPromotion.Parsers
+namespace GeoBuyerPromotion.Parsers;
+
+public interface IParser
 {
-	public interface IParser
-	{
-		public List<Category> GetCategories(string file);
-		public List<Product> GetProductsByCategory(string file, string categoryName);
-	}
+	public List<Category> GetCategories(string file);
+    List<Category> GetCategoriesInternal(HtmlDocument document);
+    public List<Product> GetProductsByCategory(string file, string categoryName);
+    public List<Product> GetProductsByCategoryInternal(HtmlDocument document);
 }
 

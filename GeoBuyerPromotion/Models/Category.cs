@@ -1,11 +1,11 @@
-﻿using System;
-namespace GeoBuyerPromotion.Models;
+﻿namespace GeoBuyerPromotion.Models;
 
-public record Category(Guid id, string name, string categoryUrl)
+public record Category(string id, string name, string categoryUrl);
+
+public record ExtendedCategory(string id, string name, string categoryUrl, string marketId, string marketName)
 {
-    public override string ToString()
-    {
-        return $"Category Name: {name}\n" + $"Url: {categoryUrl} \n";
-    }
+    public ExtendedCategory(Category category, Spot market)
+        : this(category.id, category.name, category.categoryUrl, market.id, market.name)
+    { }
 }
 
