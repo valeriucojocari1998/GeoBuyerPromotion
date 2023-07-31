@@ -10,7 +10,7 @@ public interface IRepository
     /// <summary>
     ///  Spot methods
     /// </summary>
-    public Spot GetSpotByName(string spotName);
+    public Spot GetSpotByProvider(string spotName);
     public List<Spot> GetSpots();
     public void InsertSpots(List<Spot> markets);
 

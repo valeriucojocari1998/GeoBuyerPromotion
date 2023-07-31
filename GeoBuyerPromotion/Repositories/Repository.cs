@@ -27,9 +27,9 @@ public record Repository : IRepository
         this.DbName = dbName;
     }
 
-    public Spot GetSpotByName(string spotName)
+    public Spot GetSpotByProvider(string spotProvider)
     {
-        return RepositoryConfig.Spots.FirstOrDefault(x => x.name == spotName)!;
+        return RepositoryConfig.Spots.FirstOrDefault(x => x.provider == spotProvider)!;
     }
 
     public List<Spot> GetSpots()

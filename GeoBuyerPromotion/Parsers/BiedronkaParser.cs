@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Text.RegularExpressions;
+﻿using GeoBuyerPromotion.Helpers;
 using GeoBuyerPromotion.Models;
 using HtmlAgilityPack;
 
@@ -30,8 +29,8 @@ public record BiedronkaParser : IParser
             var categoryNode = node.SelectSingleNode(".//a[contains(@class, 'refinement-category__link')]");
             if (categoryNode != null)
             {
-                name = RemoveMultipleSpaces(categoryNode.InnerHtml);
-                categoryUrl = RemoveMultipleSpaces(categoryNode.Attributes.FirstOrDefault(x => x.Name == "href")?.Value);
+                name = ParserHelper.RemoveMultipleSpaces(categoryNode.InnerHtml);
+                categoryUrl = ParserHelper.RemoveMultipleSpaces(categoryNode.Attributes.FirstOrDefault(x => x.Name == "href")?.Value);
                 Console.WriteLine(categoryNode.GetAttributes());
             }
 
@@ -68,37 +67,37 @@ public record BiedronkaParser : IParser
             // Parse name
             var nameNode = productNode.SelectSingleNode(".//div[contains(@class, 'product-tile__name product-tile__name--overflow')]");
             if (nameNode != null)
-                name = RemoveMultipleSpaces(nameNode.InnerText);
+                name = ParserHelper.RemoveMultipleSpaces(nameNode.InnerText);
 
             var brandNode = productNode.SelectSingleNode(".//div[contains(@class, 'product-tile__name')]");
             if (brandNode != null)
-                brand = RemoveMultipleSpaces(brandNode.InnerText);
+                brand = ParserHelper.RemoveMultipleSpaces(brandNode.InnerText);
 
             var saleSpecificationNode = productNode.SelectSingleNode(".//div[contains(@class, 'badge-tile__item\n badge-tile__item--text')]");
             if (saleSpecificationNode != null)
-                saleSpecification = RemoveMultipleSpaces(saleSpecificationNode.InnerText);
+                saleSpecification = ParserHelper.RemoveMultipleSpaces(saleSpecificationNode.InnerText);
 
             // Parse sale price
             var currentPriceNode = productNode.SelectSingleNode(".//div[contains(@class, 'price-tile__sales')]");
             if (currentPriceNode != null)
-                currentPrice = ParsePrice(currentPriceNode.InnerText);
+                currentPrice = ParserHelper.ParsePrice(currentPriceNode.InnerText);
 
 
             // Parse old price
             var oldPriceNode = productNode.SelectSingleNode(".//div[contains(@class, 'price-tile__standard')]");
             if (oldPriceNode != null)
-                oldPrice = ParsePrice(oldPriceNode.InnerText);
+                oldPrice = ParserHelper.ParsePrice(oldPriceNode.InnerText);
 
 
             var descriptionNode = productNode.SelectSingleNode(".//span[contains(@class, 'product-omnibus-price__label')]");
             if (descriptionNode != null)
-                priceLabel = RemoveMultipleSpaces(descriptionNode.InnerText);
+                priceLabel = ParserHelper.RemoveMultipleSpaces(descriptionNode.InnerText);
 
             var imageNode = productNode.SelectSingleNode(".//picture[contains(@class, 'tile-image__container')]");
             if (imageNode != null)
             {
                 var pictureNode = imageNode.SelectSingleNode(".//img");
-                imageUrl = RemoveMultipleSpaces(pictureNode.Attributes.FirstOrDefault(x => x.Name == "srcset")?.Value);
+                imageUrl = ParserHelper.RemoveMultipleSpaces(pictureNode.Attributes.FirstOrDefault(x => x.Name == "srcset")?.Value);
 
             }
 
@@ -113,27 +112,4 @@ public record BiedronkaParser : IParser
                 imageUrl: imageUrl);
         }).ToList();
     }
-    
-
-    private static string RemoveMultipleSpaces(string? input)
-    {
-        if (input == null)
-            return string.Empty;
-
-        return Regex.Replace(input, @"\s+", " ");
-
-    }
-
-
-    private static decimal ParsePrice(string priceText)
-    {
-        decimal price;
-        string cleanedText = priceText.Replace("\n", "").Replace("zł", "").Trim();
-        cleanedText = RemoveMultipleSpaces(cleanedText);
-        cleanedText = cleanedText.Replace(" ", ".");
-        decimal.TryParse(cleanedText, NumberStyles.Any, CultureInfo.InvariantCulture, out price);
-        return price;
-
-    }
-
 }

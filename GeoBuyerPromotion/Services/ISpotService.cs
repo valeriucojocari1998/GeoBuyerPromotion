@@ -10,6 +10,7 @@ interface ISpotService
     IParser Parser { get; }
     string Spot { get; }
     string SpotUrl { get; }
+    string SpotUrlAddition { get; }
     public Task GetProducts();
     public Task<List<Category>> GetCategories();
     public Task<List<Product>> GetProductsByCategory(Category category);

@@ -1,5 +1,4 @@
-﻿using GeoBuyerPromotion.Enums;
-using GeoBuyerPromotion.Managers;
+﻿using GeoBuyerPromotion.Managers;
 using GeoBuyerPromotion.Models;
 using GeoBuyerPromotion.Parsers;
 using GeoBuyerPromotion.Repositories;
@@ -12,17 +11,19 @@ public record SpotService: ISpotService
     public IParser Parser { get; }
     public string Spot { get; }
     public string SpotUrl { get; }
+    public string SpotUrlAddition { get; }
 
-    public SpotService(IRepository repository, IParser parser, string market, string marketUrl)
+    public SpotService(IRepository repository, IParser parser, string market, string marketUrl, string spotUrlAddition)
     {
         Repository = repository;
         Parser = parser;
         Spot = market;
         SpotUrl = marketUrl;
+        SpotUrlAddition = spotUrlAddition;
     }
     public async Task GetProducts()
     {
-        var spot = Repository.GetSpotByName(Spot);
+        var spot = Repository.GetSpotByProvider(Spot);
         var categories = await GetCategories();
         var productsLists = await Task.WhenAll(categories.Select(async category =>
         {
@@ -46,7 +47,7 @@ public record SpotService: ISpotService
 
     public async Task<List<Product>> GetProductsByCategory(Category category)
     {
-        var url = category.categoryUrl + "?start=0&sz=1000";
+        var url = category.categoryUrl + SpotUrlAddition;
         var data = await HtmlSourceManager.DownloadHtmlSourceCode(url);
         return Parser.GetProductsByCategory(data, category.name);
     }

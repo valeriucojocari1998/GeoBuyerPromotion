@@ -17,7 +17,7 @@ public record ExtendedProduct(
     string categoryId,
     string categoryName,
     string marketId,
-    string marketName,
+    string marketProvider,
     decimal? oldPrice = null,
     string? brand = null,
     string? priceLabel = null,
@@ -37,7 +37,7 @@ public record ExtendedProduct(
               categoryId: category.id,
               categoryName: category.name,
               marketId: market.id,
-              marketName: market.name)
+              marketProvider: market.provider)
     { }
 }
 
