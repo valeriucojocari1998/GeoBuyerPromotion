@@ -29,7 +29,7 @@ public record BiedronkaParser : IParser
             var categoryNode = node.SelectSingleNode(".//a[contains(@class, 'refinement-category__link')]");
             if (categoryNode != null)
             {
-                name = ParserHelper.RemoveMultipleSpaces(categoryNode.InnerHtml);
+                name = ParserHelper.RemoveNumberPart(categoryNode.InnerText);
                 categoryUrl = ParserHelper.RemoveMultipleSpaces(categoryNode.Attributes.FirstOrDefault(x => x.Name == "href")?.Value);
             }
 

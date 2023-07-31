@@ -1,4 +1,5 @@
-﻿using GeoBuyerPromotion.Models;
+﻿using GeoBuyerPromotion.Managers;
+using GeoBuyerPromotion.Models;
 using GeoBuyerPromotion.Parsers;
 using GeoBuyerPromotion.Repositories;
 
@@ -6,6 +7,7 @@ namespace GeoBuyerPromotion.Services;
 
 interface ISpotService
 {
+    CsvManager CsvManager { get; }
     IRepository Repository { get; }
     IParser Parser { get; }
     string Spot { get; }

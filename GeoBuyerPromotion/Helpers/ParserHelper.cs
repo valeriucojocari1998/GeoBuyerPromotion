@@ -19,6 +19,7 @@ public record ParserHelper
         decimal price;
         string cleanedText = priceText.Replace("\n", "").Replace("zł", "").Trim();
         cleanedText = RemoveMultipleSpaces(cleanedText);
+        cleanedText = cleanedText.Replace(".", ",");
         cleanedText = cleanedText.Replace(" ", ".");
         decimal.TryParse(cleanedText, NumberStyles.Any, CultureInfo.InvariantCulture, out price);
         return price;
@@ -28,5 +29,15 @@ public record ParserHelper
     {
         string decodedUrl = Uri.UnescapeDataString(url);
         return decodedUrl;
+    }
+
+    public static string RemoveNumberPart(string input)
+    {
+        // Define a regular expression pattern to match "(number)" and spaces around it.
+        string pattern = @"\s+\(\d+\)\s+";
+
+        // Replace the matched pattern with an empty string to remove it.
+        string result = Regex.Replace(input, pattern, " ");
+        return result.Trim(); // Trim to remove any leading/trailing spaces.
     }
 }

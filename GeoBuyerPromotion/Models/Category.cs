@@ -2,10 +2,10 @@
 
 public record Category(string id, string name, string categoryUrl);
 
-public record ExtendedCategory(string id, string name, string categoryUrl, string marketId, string marketProvider)
+public record ExtendedCategory(string id, string name, string marketId, string marketProvider, string categoryUrl)
 {
     public ExtendedCategory(Category category, Spot market)
-        : this(category.id, category.name, category.categoryUrl, market.id, market.provider)
+        : this(category.id, category.name, market.id, market.provider, category.categoryUrl)
     { }
 }
 

@@ -7,14 +7,16 @@ namespace GeoBuyerPromotion.Services;
 
 public record SpotService: ISpotService
 {
+    public CsvManager CsvManager { get; }
     public IRepository Repository { get; }
     public IParser Parser { get; }
     public string Spot { get; }
     public string SpotUrl { get; }
     public string SpotUrlAddition { get; }
 
-    public SpotService(IRepository repository, IParser parser, string market, string marketUrl, string spotUrlAddition)
+    public SpotService(CsvManager csvManager, IRepository repository, IParser parser, string market, string marketUrl, string spotUrlAddition)
     {
+        CsvManager = csvManager;
         Repository = repository;
         Parser = parser;
         Spot = market;
@@ -31,8 +33,9 @@ public record SpotService: ISpotService
             return products.Select(product => new ExtendedProduct(product, category, spot));
         }));
 
-        var extendedCategories = categories.Select(cat => new ExtendedCategory(cat, spot));
-        var extendedProducts = productsLists.SelectMany(pr => pr);
+        var extendedCategories = categories.Select(cat => new ExtendedCategory(cat, spot)).ToList();
+        var extendedProducts = productsLists.SelectMany(pr => pr).ToList();
+        CsvManager.WriteListsToCsv(spot, extendedCategories, extendedProducts);
     }
 
     public async Task<List<Category>> GetCategories()
